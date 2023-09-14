@@ -16,7 +16,7 @@ public class NoteManager : MonoBehaviour
     [SerializeField] private Transform playPositionObject;
     
     private const int TempoIncreaseAmount = 20;
-    private const int TempoIncreaseThreshold = 4;
+    private const int TempoIncreaseThreshold = 6;
     private const int GameOverThreshold = 5;
 
     private List<MusicalNote> MusicalNoteList;

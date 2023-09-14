@@ -11,13 +11,18 @@ public class GameOverUI : MonoBehaviour
 
     private void Start()
     {
-        NoteManager.Instance.OnGameOver += GameHandler_OnGameOver;
+        GameManager.Instance.OnStateChange += GameManager_OnStateChange;
         
         Hide();
     }
 
-    private void GameHandler_OnGameOver(object sender, EventArgs e)
+    private void GameManager_OnStateChange(object sender, EventArgs e)
     {
+        if (GameManager.Instance.CurrentGameState != GameState.GameOver)
+        {
+            return;
+        }
+        
         numberOfNoteHitText.text = ScoreManager.Instance.NumberOfNoteHit.ToString();
         numberOfMissedText.text = ScoreManager.Instance.NumberOfNoteMissed.ToString();
         maxComboText.text = ScoreManager.Instance.MaxCombo.ToString();

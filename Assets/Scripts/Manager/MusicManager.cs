@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
@@ -11,6 +12,15 @@ public class MusicManager : MonoBehaviour
         _baseTempo = NoteManager.Instance.GetTempo();
         
         NoteManager.Instance.OnTempoIncrease += GameHandler_OnTempoIncrease;
+        GameManager.Instance.OnStateChange += GameManager_OnStateChange;
+    }
+
+    private void GameManager_OnStateChange(object sender, EventArgs e)
+    {
+        if (GameManager.Instance.CurrentGameState == GameState.GamePlaying)
+        {
+            _audioSource.Play();
+        }
     }
 
     private void GameHandler_OnTempoIncrease(object sender, OnTempoIncreaseEventArgs e)

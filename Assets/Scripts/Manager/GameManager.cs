@@ -4,43 +4,54 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
    public static GameManager Instance { get; private set; }
-   
-   private GameState _currentGameState;
+   public GameState CurrentGameState { get; private set; }
 
+   public float CountDownToStartTimer { get; private set; } = 3f;
+   public event EventHandler OnStateChange;
+   
    private float _waitingToStartTimer = 1f;
-   private float _countDownToStartTimer = 3f;
 
    private void Awake()
    {
       Instance = this;
-      _currentGameState = GameState.WaitingToStart;
+      CurrentGameState = GameState.WaitingToStart;
    }
 
+   private void Start()
+   {
+      NoteManager.Instance.OnGameOver += NoteManager_OnGameOver;
+   }
+   
    private void Update()
    {
-      switch (_currentGameState)
+      switch (CurrentGameState)
       {
          case GameState.WaitingToStart:
             _waitingToStartTimer -= Time.deltaTime;
 
             if (_waitingToStartTimer < 0f)
             {
-               _currentGameState = GameState.CountDownToStart;
+               CurrentGameState = GameState.CountDownToStart;
+               OnStateChange?.Invoke(this, EventArgs.Empty);
             }
             
             break;
          case GameState.CountDownToStart:
-            if (_waitingToStartTimer < 0f)
+            CountDownToStartTimer -= Time.deltaTime;
+            
+            if (CountDownToStartTimer < 0f)
             {
-               _currentGameState = GameState.GamePlaying;
+               CurrentGameState = GameState.GamePlaying;
+               OnStateChange?.Invoke(this, EventArgs.Empty);
             }
             
             break;
       }
    }
-
-   public bool IsGamePlaying()
+   
+   private void NoteManager_OnGameOver(object sender, EventArgs e)
    {
-      return _currentGameState == GameState.GamePlaying;
+      CurrentGameState = GameState.GameOver;
+      OnStateChange?.Invoke(this, EventArgs.Empty);
    }
 }

@@ -56,7 +56,7 @@ public class MusicalNote : MonoBehaviour
 
     private void ScrollNoteByBeat()
     {
-        if (GameManager.Instance.IsGamePlaying() == false)
+        if (GameManager.Instance.CurrentGameState != GameState.GamePlaying)
         {
             return;
         }

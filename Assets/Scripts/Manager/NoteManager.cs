@@ -45,18 +45,12 @@ public class NoteManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.IsGamePlaying() == false)
+        if (GameManager.Instance.CurrentGameState != GameState.GamePlaying)
         {
             return;
         }
-        
-        _spawnNoteTimer -= Time.deltaTime;
 
-        if (_spawnNoteTimer <= 0f)
-        {
-            _spawnNoteTimer = TimeBetween8Beat;
-            CreateNote();
-        }
+        SpawnNoteAfter8Beat();
     }
 
     private void MusicalNote_OnNoteHit(object sender, OnNoteHitEventArgs e)
@@ -98,6 +92,17 @@ public class NoteManager : MonoBehaviour
         MusicalNoteList.Add(musicalNote);
     }
 
+    private void SpawnNoteAfter8Beat()
+    {
+        _spawnNoteTimer -= Time.deltaTime;
+
+        if (_spawnNoteTimer <= 0f)
+        {
+            _spawnNoteTimer = TimeBetween8Beat;
+            CreateNote();
+        }
+    }
+    
     private void DestroyNote(MusicalNote musicalNote)
     {
         for (int i = 0; i < MusicalNoteList.Count; i++)
@@ -106,7 +111,7 @@ public class NoteManager : MonoBehaviour
             {
                 MusicalNoteList.Remove(musicalNote);
                 Destroy(musicalNote.gameObject);
-                i--;
+                // i--;
                 
                 break;
             }

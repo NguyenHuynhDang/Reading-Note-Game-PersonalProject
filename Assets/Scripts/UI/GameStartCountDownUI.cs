@@ -9,6 +9,8 @@ public class GameStartCountDownUI : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnStateChange += GameManager_OnStateChange;
+        
+        Hide();
     }
 
     private void Update()
@@ -30,7 +32,6 @@ public class GameStartCountDownUI : MonoBehaviour
 
     private void Show()
     {
-        Debug.Log("Show");
         gameObject.SetActive(true);
     }
 

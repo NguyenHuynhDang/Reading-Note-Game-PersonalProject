@@ -1,22 +1,25 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
     
     public int Score { get; private set; }
+    public int CurrentScoreMultiplier { get; private set; } = DefaultScoreMultiplier;
+    public int ComboNoteHit { get; private set; }
     public int MaxCombo { get; private set; }
     public int NumberOfNoteHit { get; private set; }
     public int NumberOfNoteMissed { get; private set; }
+
+    public event EventHandler OnValueChange;
     
     [SerializeField] private int[] multiplierThreshold;
     
     private const int ScorePerNoteHit = 100;
     private const int DefaultScoreMultiplier = 1;
     
-    private int _comboNoteHit;
-    private int _currentScoreMultiplier = DefaultScoreMultiplier;
     private int _multiplyTracker;
 
     private void Awake()
@@ -32,30 +35,35 @@ public class ScoreManager : MonoBehaviour
 
     private void MusicalNote_OnNoteHit(object sender, OnNoteHitEventArgs e)
     {
-        Score += ScorePerNoteHit * _currentScoreMultiplier;
+        Score += ScorePerNoteHit * CurrentScoreMultiplier;
         
         NumberOfNoteHit++;
-        _comboNoteHit++;
+        ComboNoteHit++;
         
         // Update Multiplier
-        if (_currentScoreMultiplier - 1 < multiplierThreshold.Length)
+        if (CurrentScoreMultiplier - 1 < multiplierThreshold.Length)
         {
             _multiplyTracker++;
-            if (multiplierThreshold[_currentScoreMultiplier - 1] <= _multiplyTracker)
+            if (multiplierThreshold[CurrentScoreMultiplier - 1] <= _multiplyTracker)
             {
                 _multiplyTracker = 0;
-                _currentScoreMultiplier++;
+                CurrentScoreMultiplier++;
             }
         }
+        
+        OnValueChange?.Invoke(this, EventArgs.Empty);
     }
 
     private void MusicalNote_OnNoteMissed(object sender, OnNoteMissedEventArgs e)
     {
-        _currentScoreMultiplier = DefaultScoreMultiplier;
+        CurrentScoreMultiplier = DefaultScoreMultiplier;
         
         NumberOfNoteMissed++;
+        _multiplyTracker = 0;
         
-        MaxCombo = Math.Max(MaxCombo, _comboNoteHit);
-        _comboNoteHit = 0;
+        MaxCombo = Math.Max(MaxCombo, ComboNoteHit);
+        ComboNoteHit = 0;
+        
+        OnValueChange?.Invoke(this, EventArgs.Empty);
     }
 }

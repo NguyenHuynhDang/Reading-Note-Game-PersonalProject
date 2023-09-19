@@ -18,3 +18,10 @@ public enum GameState
     GamePlaying,
     GameOver
 }
+
+public enum Scene
+{
+    MainMenuScene,
+    LoadingScene,
+    GamePracticeScene
+}

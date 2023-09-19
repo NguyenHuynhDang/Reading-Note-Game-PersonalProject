@@ -13,6 +13,18 @@ public class MusicManager : MonoBehaviour
         
         NoteManager.Instance.OnTempoIncrease += NoteManager_OnTempoIncrease;
         GameManager.Instance.OnStateChange += GameManager_OnStateChange;
+        GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+    }
+
+    private void GameManager_OnGameUnpaused(object sender, EventArgs e)
+    {
+        _audioSource.UnPause();
+    }
+
+    private void GameManager_OnGamePaused(object sender, EventArgs e)
+    {
+        _audioSource.Pause();
     }
 
     private void GameManager_OnStateChange(object sender, EventArgs e)

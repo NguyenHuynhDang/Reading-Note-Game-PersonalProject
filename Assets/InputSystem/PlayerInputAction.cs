@@ -89,6 +89,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5f25bb3-4609-4895-94a7-69d733c25ebf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -168,6 +177,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""PlayGPitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce61d889-7ec3-417e-9b7a-0c2b8fb7703f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -183,6 +203,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_PlayEPitch = m_Player.FindAction("PlayEPitch", throwIfNotFound: true);
         m_Player_PlayFPitch = m_Player.FindAction("PlayFPitch", throwIfNotFound: true);
         m_Player_PlayGPitch = m_Player.FindAction("PlayGPitch", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PlayEPitch;
     private readonly InputAction m_Player_PlayFPitch;
     private readonly InputAction m_Player_PlayGPitch;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -262,6 +284,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @PlayEPitch => m_Wrapper.m_Player_PlayEPitch;
         public InputAction @PlayFPitch => m_Wrapper.m_Player_PlayFPitch;
         public InputAction @PlayGPitch => m_Wrapper.m_Player_PlayGPitch;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -292,6 +315,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @PlayGPitch.started += instance.OnPlayGPitch;
             @PlayGPitch.performed += instance.OnPlayGPitch;
             @PlayGPitch.canceled += instance.OnPlayGPitch;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -317,6 +343,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @PlayGPitch.started -= instance.OnPlayGPitch;
             @PlayGPitch.performed -= instance.OnPlayGPitch;
             @PlayGPitch.canceled -= instance.OnPlayGPitch;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -343,5 +372,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnPlayEPitch(InputAction.CallbackContext context);
         void OnPlayFPitch(InputAction.CallbackContext context);
         void OnPlayGPitch(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

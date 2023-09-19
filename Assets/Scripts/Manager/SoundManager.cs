@@ -4,6 +4,7 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioClip[] noteHitAudioClips;
     [SerializeField] private AudioClip noteMissedAudioClip;
+   
     private void Start()
     {
         MusicalNote.OnNoteHit += MusicalNote_OnNoteHit;

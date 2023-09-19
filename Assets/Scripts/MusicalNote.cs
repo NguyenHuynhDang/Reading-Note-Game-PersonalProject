@@ -100,5 +100,10 @@ public class MusicalNote : MonoBehaviour
         // the function never reaches here
         return Pitch.A;
     }
-    
+
+    public static void ResetStaticData()
+    {
+        OnNoteHit = null;
+        OnNoteMissed = null;
+    }
 }

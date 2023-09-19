@@ -8,6 +8,7 @@ public class GameInput : MonoBehaviour
     
     public event EventHandler<OnPitchToggleEventArgs> OnPlayPitch;
     public event EventHandler<OnPitchToggleEventArgs> OnReleasePitch;
+    public event EventHandler OnPauseAction;
     
     private PlayerInputAction _playerInputAction;
 
@@ -37,6 +38,36 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Player.PlayEPitch.canceled += EPitch_canceled;
         _playerInputAction.Player.PlayFPitch.canceled += FPitch_canceled;
         _playerInputAction.Player.PlayGPitch.canceled += GPitch_canceled;
+        
+        _playerInputAction.Player.Pause.performed += Pause_performed;
+    }
+
+    private void OnDestroy()
+    {
+        _playerInputAction.Player.PlayAPitch.performed -= APitch_performed;
+        _playerInputAction.Player.PlayBPitch.performed -= BPitch_performed;
+        _playerInputAction.Player.PlayCPitch.performed -= CPitch_performed;
+        _playerInputAction.Player.PlayDPitch.performed -= DPitch_performed;
+        _playerInputAction.Player.PlayEPitch.performed -= EPitch_performed;
+        _playerInputAction.Player.PlayFPitch.performed -= FPitch_performed;
+        _playerInputAction.Player.PlayGPitch.performed -= GPitch_performed;
+
+        _playerInputAction.Player.PlayAPitch.canceled -= APitch_canceled;
+        _playerInputAction.Player.PlayBPitch.canceled -= BPitch_canceled;
+        _playerInputAction.Player.PlayCPitch.canceled -= CPitch_canceled;
+        _playerInputAction.Player.PlayDPitch.canceled -= DPitch_canceled;
+        _playerInputAction.Player.PlayEPitch.canceled -= EPitch_canceled;
+        _playerInputAction.Player.PlayFPitch.canceled -= FPitch_canceled;
+        _playerInputAction.Player.PlayGPitch.canceled -= GPitch_canceled;
+        
+        _playerInputAction.Player.Pause.performed -= Pause_performed;
+        
+        _playerInputAction.Dispose();
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void APitch_performed(InputAction.CallbackContext obj)

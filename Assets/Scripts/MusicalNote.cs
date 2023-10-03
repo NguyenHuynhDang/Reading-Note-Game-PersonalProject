@@ -4,9 +4,9 @@ using Random = UnityEngine.Random;
 
 public class MusicalNote : MonoBehaviour
 {
-    private const float DeadZoneX = -4.5f;
     
     private bool _canBePress;
+    private NoteScroller _noteScroller;
 
     public event EventHandler<OnNoteInstantiateEventArgs> OnInstantiate;
     
@@ -18,58 +18,43 @@ public class MusicalNote : MonoBehaviour
     private void Awake()
     {
         SetMusicalNoteRandomly();
+        _noteScroller = gameObject.GetComponent<NoteScroller>();
     }
 
     private void Start()
     {
-        OnInstantiate?.Invoke(this, new OnNoteInstantiateEventArgs() {Note = Note});
+        OnInstantiate?.Invoke(this, new OnNoteInstantiateEventArgs {Note = Note});
         GameInput.Instance.OnPlayPitch += GameInput_OnPlayPitch;
+        
+        _noteScroller.OnPlayPositionEnter += NoteScroller_OnPlayPositionEnter;
+        _noteScroller.OnPlayPositionExit += NoteScroller_OnPlayPositionExit;
+    }
+
+    private void NoteScroller_OnPlayPositionEnter(object sender, EventArgs e)
+    {
+        _canBePress = true;
     }
     
-    private void Update()
+    private void NoteScroller_OnPlayPositionExit(object sender, EventArgs e)
     {
-        ScrollNoteByBeat();
+        OnNoteMissed?.Invoke(this, new OnNoteMissedEventArgs { MusicalNote = this });
     }
 
     private void GameInput_OnPlayPitch(object sender, OnPitchToggleEventArgs e)
     {
-        if (_canBePress && GetNotePitch() == e.PitchToggle && this)
+        if (_canBePress && GetNotePitch() != e.PitchToggle && this)
         {
-            OnNoteHit?.Invoke(this, new OnNoteHitEventArgs { MusicalNote = this });
-        }
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        _canBePress = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (transform.position.x < DeadZoneX)
-        {
-            _canBePress = false;
-
             OnNoteMissed?.Invoke(this, new OnNoteMissedEventArgs { MusicalNote = this });
-        }
-    }
-
-    private void ScrollNoteByBeat()
-    {
-        if (GameManager.Instance.CurrentGameState != GameState.GamePlaying)
-        {
             return;
         }
         
-        float offset = 1f;
-        float distance = GameAssets.Instance.musicalNotePrefab.transform.position.x -
-                    NoteManager.Instance.GetPlayPositionObject().position.x + offset;
-        
-        float speed = distance / NoteManager.Instance.TimeBetween8Beat;
-        
-        transform.position += Vector3.left * (speed * Time.deltaTime);
+        if (_canBePress && GetNotePitch() == e.PitchToggle && this)
+        {
+            OnNoteHit?.Invoke(this, new OnNoteHitEventArgs { MusicalNote = this });
+            return;
+        }
     }
-
+    
     private void SetMusicalNoteRandomly()
     {
         int numberOfNotes = Enum.GetNames(typeof(Note)).Length;

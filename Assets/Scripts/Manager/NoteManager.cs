@@ -13,8 +13,7 @@ public class NoteManager : MonoBehaviour
     public event EventHandler OnGameOver;
 
     [SerializeField] private int tempo;
-    [SerializeField] private Transform playPositionObject;
-    
+
     private const int TempoIncreaseAmount = 20;
     private const int TempoIncreaseThreshold = 6;
     private const int GameOverThreshold = 5;
@@ -128,8 +127,4 @@ public class NoteManager : MonoBehaviour
         return tempo;
     }
     
-    public Transform GetPlayPositionObject()
-    {
-        return playPositionObject;
-    }
 }

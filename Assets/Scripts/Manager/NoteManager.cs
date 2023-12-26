@@ -78,7 +78,6 @@ public class NoteManager : MonoBehaviour
         if (_numberOfNoteMissedContinuously >= GameOverThreshold)
         {
             // game over
-            Time.timeScale = 0;
             OnGameOver?.Invoke(this, EventArgs.Empty);
         }
         

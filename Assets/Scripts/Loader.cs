@@ -6,7 +6,7 @@ public static class Loader
 
     public static void Load(Scene targetScene)
     {
-        Loader._targetScene = targetScene;
+        _targetScene = targetScene;
 
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }

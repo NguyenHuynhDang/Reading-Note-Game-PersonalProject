@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
    
    private void NoteManager_OnGameOver(object sender, EventArgs e)
    {
+      Time.timeScale = 0;
       CurrentGameState = GameState.GameOver;
       OnStateChange?.Invoke(this, EventArgs.Empty);
    }
@@ -83,5 +85,14 @@ public class GameManager : MonoBehaviour
          Time.timeScale = 1f;
          OnGameUnpaused?.Invoke(this, EventArgs.Empty);
       }
+   }
+
+   public void Replay()
+   {
+      // CurrentGameState = GameState.WaitingToStart;
+      // OnStateChange?.Invoke(this, EventArgs.Empty);
+      Time.timeScale = 1f;
+      MusicalNote.ResetStaticData();
+      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
    }
 }

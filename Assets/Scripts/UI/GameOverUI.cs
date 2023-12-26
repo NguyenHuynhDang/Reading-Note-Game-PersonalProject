@@ -35,7 +35,6 @@ public class GameOverUI : MonoBehaviour
     {
         if (GameManager.Instance.CurrentGameState != GameState.GameOver)
         {
-            Hide();
             return;
         }
         

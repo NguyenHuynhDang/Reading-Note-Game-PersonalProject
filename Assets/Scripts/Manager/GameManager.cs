@@ -89,10 +89,8 @@ public class GameManager : MonoBehaviour
 
    public void Replay()
    {
-      // CurrentGameState = GameState.WaitingToStart;
-      // OnStateChange?.Invoke(this, EventArgs.Empty);
       Time.timeScale = 1f;
-      MusicalNote.ResetStaticData();
+      ResetStaticDataManager.Instance.Reset();
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
    }
 }

@@ -35,7 +35,7 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private void NoteManager_OnTempoIncrease(object sender, OnTempoIncreaseEventArgs e)
+    private void NoteManager_OnTempoIncrease(object sender, EventArgs e)
     {
         float baseBps = _baseTempo / 60f;
         float bps = NoteManager.Instance.GetTempo() / 60f;

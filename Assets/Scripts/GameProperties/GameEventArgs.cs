@@ -19,8 +19,3 @@ public class OnNoteMissedEventArgs : EventArgs
 {
     public MusicalNote MusicalNote;
 }
-
-public class OnTempoIncreaseEventArgs : EventArgs
-{
-    public int IncreaseAmount;
-}

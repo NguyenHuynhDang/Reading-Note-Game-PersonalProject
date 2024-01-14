@@ -9,7 +9,7 @@ public class NoteManager : MonoBehaviour
     
     public float TimeBetween8Beat { get; private set; }
 
-    public event EventHandler<OnTempoIncreaseEventArgs> OnTempoIncrease;
+    public event EventHandler OnTempoIncrease;
     public event EventHandler OnGameOver;
 
     [SerializeField] private int tempo;
@@ -18,7 +18,7 @@ public class NoteManager : MonoBehaviour
     private const int TempoIncreaseThreshold = 6;
     private const int GameOverThreshold = 5;
 
-    private List<MusicalNote> MusicalNoteList;
+    private List<MusicalNote> _musicalNoteList;
     
     private int _numberOfNoteHitContinuously;
     private int _numberOfNoteMissedContinuously;
@@ -29,7 +29,7 @@ public class NoteManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        MusicalNoteList = new List<MusicalNote>();
+        _musicalNoteList = new List<MusicalNote>();
 
         SetTimeBetween8Beat();
     }
@@ -64,7 +64,7 @@ public class NoteManager : MonoBehaviour
             _numberOfNoteHitContinuously = 0;
 
             SetTimeBetween8Beat();
-            OnTempoIncrease?.Invoke(this, new OnTempoIncreaseEventArgs {IncreaseAmount = TempoIncreaseAmount});
+            OnTempoIncrease?.Invoke(this, EventArgs.Empty);
         }
 
         DestroyNote(e.MusicalNote);
@@ -87,7 +87,7 @@ public class NoteManager : MonoBehaviour
     private void CreateNote()
     {
         MusicalNote musicalNote = Instantiate(GameAssets.Instance.musicalNotePrefab);
-        MusicalNoteList.Add(musicalNote);
+        _musicalNoteList.Add(musicalNote);
     }
 
     private void SpawnNoteAfter8Beat()
@@ -103,11 +103,11 @@ public class NoteManager : MonoBehaviour
     
     private void DestroyNote(MusicalNote musicalNote)
     {
-        for (int i = 0; i < MusicalNoteList.Count; i++)
+        for (int i = 0; i < _musicalNoteList.Count; i++)
         {
-            if (MusicalNoteList[i] == musicalNote)
+            if (_musicalNoteList[i] == musicalNote)
             {
-                MusicalNoteList.Remove(musicalNote);
+                _musicalNoteList.Remove(musicalNote);
                 Destroy(musicalNote.gameObject);
                 // i--;
                 

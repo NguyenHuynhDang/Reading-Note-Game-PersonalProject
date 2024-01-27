@@ -16,10 +16,7 @@ public class GameOverUI : MonoBehaviour
 
     private void Awake()
     {
-        replayButton.onClick.AddListener(() =>
-        {
-            GameManager.Instance.Replay();
-        }); 
+        replayButton.onClick.AddListener(() => GameManager.Instance.Replay());
         mainMenuButton.onClick.AddListener(() => Loader.Load(Scene.MainMenuScene));
         quitButton.onClick.AddListener(Application.Quit);
     }

@@ -10,10 +10,10 @@ public class GamePlayUI : MonoBehaviour
 
     private void Start()
     {
-        ScoreManager.Instance.OnValueChange += InstanceOnOnValueChange;
+        ScoreManager.Instance.OnValueChange += ScoreManager_OnValueChange;
     }
 
-    private void InstanceOnOnValueChange(object sender, EventArgs e)
+    private void ScoreManager_OnValueChange(object sender, EventArgs e)
     {
         currentScoreText.text = ScoreManager.Instance.Score.ToString();
         currentComboText.text = ScoreManager.Instance.ComboNoteHit.ToString();

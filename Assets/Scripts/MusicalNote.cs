@@ -28,6 +28,8 @@ public class MusicalNote : MonoBehaviour
         
         _noteScroller.OnPlayPositionEnter += NoteScroller_OnPlayPositionEnter;
         _noteScroller.OnPlayPositionExit += NoteScroller_OnPlayPositionExit;
+        
+        Debug.Log("Pitch: " + GetNotePitch());
     }
 
     private void NoteScroller_OnPlayPositionEnter(object sender, EventArgs e)

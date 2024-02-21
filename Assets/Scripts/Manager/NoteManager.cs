@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class NoteManager : MonoBehaviour
 {
@@ -14,9 +15,9 @@ public class NoteManager : MonoBehaviour
 
     [SerializeField] private int tempo;
 
-    private const int TempoIncreaseAmount = 20;
-    private const int TempoIncreaseThreshold = 6;
-    private const int GameOverThreshold = 5;
+    [SerializeField] private int tempoIncreaseAmount;
+    [SerializeField] private int tempoIncreaseThreshold;
+    [SerializeField] private int gameOverThreshold;
 
     private List<MusicalNote> _musicalNoteList;
     
@@ -58,9 +59,9 @@ public class NoteManager : MonoBehaviour
         _numberOfNoteMissedContinuously = 0;
 
         // Update Tempo
-        if (_numberOfNoteHitContinuously == TempoIncreaseThreshold)
+        if (_numberOfNoteHitContinuously == tempoIncreaseThreshold)
         {
-            tempo += TempoIncreaseAmount;
+            tempo += tempoIncreaseAmount;
             _numberOfNoteHitContinuously = 0;
 
             SetTimeBetween8Beat();
@@ -75,7 +76,7 @@ public class NoteManager : MonoBehaviour
         _numberOfNoteMissedContinuously++;
         _numberOfNoteHitContinuously = 0;
 
-        if (_numberOfNoteMissedContinuously >= GameOverThreshold)
+        if (_numberOfNoteMissedContinuously >= gameOverThreshold)
         {
             // game over
             OnGameOver?.Invoke(this, EventArgs.Empty);

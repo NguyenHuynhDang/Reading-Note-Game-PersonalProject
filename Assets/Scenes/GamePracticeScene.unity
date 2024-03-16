@@ -4142,6 +4142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tempo: 160
+  tempoIncreaseAmount: 20
+  tempoIncreaseThreshold: 6
+  gameOverThreshold: 5
 --- !u!4 &1252218599
 Transform:
   m_ObjectHideFlags: 0

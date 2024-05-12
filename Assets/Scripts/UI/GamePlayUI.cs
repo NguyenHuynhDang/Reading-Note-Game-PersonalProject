@@ -1,12 +1,19 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI currentScoreText;
     [SerializeField] private TextMeshProUGUI currentMultiplierText;
     [SerializeField] private TextMeshProUGUI currentComboText;
+    [SerializeField] private Button replayButton;
+
+    private void Awake()
+    {
+        replayButton.onClick.AddListener(() => GameManager.Instance.Replay());
+    }
 
     private void Start()
     {
